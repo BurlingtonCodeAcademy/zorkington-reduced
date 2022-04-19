@@ -15,30 +15,32 @@ In this project, you will create a version of Zork born from your own beautiful 
 
 ## Goals
 
-* utilizing functions, methods, and objects for a deeper understanding of encapsulation.
-* understand *state* and *state transitions*, which are useful in many areas, e.g.
-  * photo carousel
-  * buttons, menus, other widgets
-  * parsers
-  * network protocols
+* Use Functions, Methods, and Objects.
+* Use Classes, and constructor functions to create Objects.
+* Understand **state** and **state transitions**.
+* Understand complex control flow, based on conditions and variables.
 
 ## Design
 
-Your code will need to represent (or *reify*) several distinct states, including:
+Your code will need to represent several distinct states, including:
 
-* current room
-  * room descriptions (immutable)
-  * room connections (immutable)
-  * room inventory (mutable)
-* current player
-  * player inventory (mutable)
-  * player status (mutable)
+* The current room
+  * Room description (immutable)
+  * Room connection (immutable)
+  * Room inventory (mutable)
+* Other rooms
+  * Room description (immutable)
+  * Room connection (immutable)
+  * Room inventory (mutable)
+* The player
+  * Player inventory (mutable)
+  * Player status (mutable)
 
 Think about appropriate data structures for each of these. Note that you do not need to write code for these until you are actually implementing a story that requires them, but it is good to make a rough plan early on, to anticipate pitfalls and estimate how difficult upcoming stories will be.
 
 Sometimes a data structure that works well for the simple case will need to be altered to work for the general case. In this project, the app will grow (more rooms, more commands) from story to story and your data structures should change to accommodate.
 
-You may want to create a **State Machine** to represent potential room transitions.
+You **may** want to create a **State Machine** to represent potential room transitions.
 
 ## Remember to Demonstrate
 
@@ -51,7 +53,7 @@ After implementing a story, *before* starting work on the next story...
 
 And during the day take breaks, and play each others' games!
 
-## Stories - Required
+## Project Stories - Required
 
 > Note: These stories build off of the **Design** section above. While the stories provided are meant to implement those concepts, artistic liberty in how these stories manifest is ultimately yours. If you're unsure if an idea or mechanic will fulfill a certain story, ask your instructor.
 
@@ -102,6 +104,83 @@ while (answer !== 'exit') {
 
 <!--BOX-->
 
+## Locked Out
+
+**Given** the player is in the `starting room`
+
+**When** the player attempts to enter a new room
+
+**Then** the game denies the player
+
+```txt
+>_open door
+The door is locked. There is a keypad on the door handle.
+```
+
+<!--/BOX-->
+
+<!--BOX-->
+
+## Unauthorized Access
+
+**Given** the player is in the `starting room`
+
+**When** the player fails the puzzle (e.g. enters the incorrect password)
+
+**Then** the game denies the player entry
+
+```txt
+>_enter code 00000
+Bzzzzt! The door is still locked.
+```
+
+**And** the player remains in the `starting room`
+
+<!--/BOX-->
+
+<!--BOX-->
+
+## Speak friend and enter
+
+**Given** the player is in the `starting room`
+
+**When** the player solves a puzzle (e.g. enters a correct password)
+
+**Then** the game allows the player to enter the `next room`
+
+```txt
+>_enter code 12345
+Success! The door opens.
+You enter the foyer and the door shuts behind you.
+```
+
+**And** the player moves into the `next room`
+
+<!--/BOX-->
+
+<!--BOX-->
+
+## Foyer
+
+**Given** the player is in the `next room`
+
+**Then** the game displays a description, with at least one (takeable) item in said description
+
+```txt
+You are in a foyer. Or maybe it's an antechamber. 
+Or a vestibule. 
+Or an entryway. 
+Or an atrium. 
+Or a narthex. 
+But let's forget all that fancy vocabulary, and just call it a foyer.
+Anyways, it's definitely not a mudroom.
+A copy of the local paper lies in a corner.
+```
+
+<!--/BOX-->
+
+<!--BOX-->
+
 ## Interact With an Item
 
 **Given** the player has been given introductory text
@@ -112,7 +191,7 @@ while (answer !== 'exit') {
 
 ```txt
 >_ read sign
-The sign says "Welcome to Burlington Code Academy!
+The sign says "Welcome to the classroom!"
 Come on up to the third floor.
 If the door is locked, use the code 12345."
 ```
@@ -127,8 +206,9 @@ If the door is locked, use the code 12345."
 You may want to make your items objects with their own properties and methods.
 
 ```js
+// A basic object, you could also use a Class to create this.
 let sign = {
-  description: "Welcome to Burlington Code Academy! Come on up to the third floor.\nIf the door is locked, use the code 12345."
+  description: "Welcome to the classroom! Come on up to the third floor.\nIf the door is locked, use the code 12345."
   read: () => {
     return this.description
   }
@@ -156,83 +236,6 @@ That would be selfish. How will other students find their way?
 ```
 
 (assume " **And** returns to the prompt" after this and all future stories)
-
-<!--/BOX-->
-
-<!--BOX-->
-
-## Locked Out
-
-**Given** the player is in the `starting room`
-
-**When** the player attempts to enter a new room
-
-**Then** the game denies the player
-
-```txt
->_open door
-The door is locked. There is a keypad on the door handle.
-```
-
-<!--/BOX-->
-
-<!--BOX-->
-
-## Speak friend and enter
-
-**Given** the player is in the `starting room`
-
-**When** the player solves a puzzle (e.g. enters a correct password)
-
-**Then** the game allows the player to enter the `next room`
-
-```txt
->_enter code 12345
-Success! The door opens.
-You enter the foyer and the door shuts behind you.
-```
-
-**And** the player moves into the `next room`
-
-<!--/BOX-->
-
-<!--BOX-->
-
-## Unauthorized Access
-
-**Given** the player is in the `starting room`
-
-**When** the player fails the puzzle (e.g. enters the incorrect password)
-
-**Then** the game denies the player entry
-
-```txt
->_enter code 00000
-Bzzzzt! The door is still locked.
-```
-
-**And** the player remains in the `starting room`
-
-<!--/BOX-->
-
-<!--BOX-->
-
-## Foyer
-
-**Given** the player is in the `next room`
-
-**Then** the game displays a description, with at least one (takeable) item in said description
-
-```txt
-You are in a foyer. Or maybe it's an antechamber. 
-Or a vestibule. 
-Or an entryway. 
-Or an atrium. 
-Or a narthex. 
-But let's forget all that fancy vocabulary, and just call it a foyer.
-Anyways, it's definitely not a mudroom. 
-A copy of the local paper lies in a corner.
-```
 
 <!--/BOX-->
 
@@ -321,7 +324,7 @@ Each room should have:
 
 <!--/BOX-->
 
-## Icebox Challenges - Bonus
+## Icebox - Bonus Challenges
 
 * Create a **puzzle** that can be solved to win, or loose, the game.
 
